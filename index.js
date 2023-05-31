@@ -1,0 +1,11 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const types_1 = require("@cartodb/workflows-engine/dist/types");
+const toolbox_1 = require("@cartodb/workflows-engine/dist/types/toolbox/toolbox");
+const fs_1 = require("fs");
+const diagram = JSON.parse((0, fs_1.readFileSync)("workflow.json", "utf8"));
+const connection = new types_1.BQConnection("my_connection_name", "myproject.workflows_temp");
+const toolbox = (0, toolbox_1.getToolbox)(types_1.Provider.BigQuery);
+const workflow = types_1.Workflow.fromDiagram("myworkflow", diagram, toolbox);
+const storedproc = workflow.getAsStoredProcedure(connection, {}, true, []);
+console.log(storedproc);
